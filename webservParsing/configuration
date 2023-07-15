@@ -1,0 +1,22 @@
+
+#first server is dafault (will answer any request that isn't redirected to servers above it), this is how it is in nginx as well unless default_server is included to listen, then nginx will take that one server as the default regardless of its order.
+
+server {
+  listen        80; 
+  Host          localhost;
+  server_name   _; // in nginx conf file, '_' is a wild card that match any server name. since the choice is ours, we can just not even include that option because.. it's up to us.
+  location  / {
+    root /where/our/files/are/stored;
+    try_files $uri = 404;   // let say we have a client that requested http://exp.com/some/file, then /some/file is the uri, usually nginx tries to find any file in the root that can be defined by root/some/file, if it didn't find it then the second part =404 comes in handy, it returns a 404 error.
+    client_max_body_size  20m; //20 megabytes
+
+
+  }
+  
+}
+
+server {
+  listen        80;
+  Host          localhost;
+  server_name   somedomaine;
+}
