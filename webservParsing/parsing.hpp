@@ -4,19 +4,9 @@
 #include <string>
 #include <cstdlib>
 #include <iostream>
-
-
-
-
-#include <stack>
-#include <iostream>
 #include <fstream>
-#include <map>
 #include <sstream>
-#include <string>
 #include  <cctype> 
-
-
 
 
 class locations

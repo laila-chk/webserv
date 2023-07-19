@@ -1,6 +1,5 @@
 #include "conf.hpp"
 #include "parsing.hpp"
-#include <algorithm>
 
 void ft_perr(std::string msg)
 {
@@ -8,11 +7,13 @@ void ft_perr(std::string msg)
   exit(1);
 }
 
-void servers_count(int &i, int &j, std::string path)
+void contexts_count(int &i, int &j, std::string path)
 {
   std::string buff;
   std::ifstream file(path);
   std::string word;
+  int   ob = 0;
+  int   cb = 0;
 
   while (getline(file, buff))
   {
@@ -20,13 +21,19 @@ void servers_count(int &i, int &j, std::string path)
     std::stringstream  buffer(buff);
 
     if ((!buff.compare(0, 6,"server") && buff.length() > 6) || (!buff.compare(0, 8,"location") && buff.length() > 8))
-      ft_perr("Error, bad syntax!");
+      ft_perr("Error: bad syntax!");
     
     if(!buff.compare("server"))
       i++;
     else if(!buff.compare("location"))
       j++;
+    else if (!buff.compare("{"))
+      ob++;
+    else if (!buff.compare("}"))
+      cb++;
   }
+  if (ob != cb)
+    ft_perr("Error: missing Bracket!");
 }
 
 int main(int ac, char **av)
@@ -42,8 +49,9 @@ int main(int ac, char **av)
 
   int i = 0;
   int j = 0;
-  servers_count(i, j, path);
+  // vector<servers> servs;
+  // vector<locations> locs;
+  contexts_count(i, j, path);
+  
 
-  std::cout << "total servrers: " << i << " and tot locations is : " << j << std::endl;
 }
-
