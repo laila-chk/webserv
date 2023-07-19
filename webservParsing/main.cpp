@@ -7,13 +7,14 @@ void ft_perr(std::string msg)
   exit(1);
 }
 
-void contexts_count(int &i, int &j, std::string path)
+void contexts_count(std::vector<servers> &srvs, std::string path)
 {
   std::string buff;
   std::ifstream file(path);
   std::string word;
   int   ob = 0;
   int   cb = 0;
+  int   i = 0;
 
   while (getline(file, buff))
   {
@@ -24,9 +25,14 @@ void contexts_count(int &i, int &j, std::string path)
       ft_perr("Error: bad syntax!");
     
     if(!buff.compare("server"))
+    {
+      srvs.push_back(servers());
       i++;
+    }
     else if(!buff.compare("location"))
-      j++;
+    {
+      srvs[i-1].loc.push_back(locations());
+    }
     else if (!buff.compare("{"))
       ob++;
     else if (!buff.compare("}"))
@@ -47,11 +53,11 @@ int main(int ac, char **av)
   else if (ac == 2)
     path = av[1];
 
-  int i = 0;
-  int j = 0;
-  // vector<servers> servs;
-  // vector<locations> locs;
-  contexts_count(i, j, path);
+  std::vector<servers> servs;
+  contexts_count(servs, path);
+  
+  std::cout << "The length of serv: " << servs.size() ;
+  std::cout << "The length of locs: " << servs[0].loc.size() ;
   
 
 }

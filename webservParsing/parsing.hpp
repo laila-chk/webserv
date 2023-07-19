@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include  <cctype> 
+#include <vector>
 
 
 class locations
@@ -27,7 +28,8 @@ class servers
   private:
 
   public:
-	locations *location;
+//	locations *location;
+    std::vector <locations> loc;
   std::string  port;
   std::string   host;
   std::string   server_name;
