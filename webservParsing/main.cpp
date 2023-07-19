@@ -2,6 +2,12 @@
 #include "parsing.hpp"
 #include <algorithm>
 
+void ft_perr(std::string msg)
+{
+  std::cout << msg << std::endl;
+  exit(1);
+}
+
 void servers_count(int &i, int &j, std::string path)
 {
   std::string buff;
@@ -10,26 +16,17 @@ void servers_count(int &i, int &j, std::string path)
 
   while (getline(file, buff))
   {
-//      std::cout << buff  << "    is bf" << std::endl;
+    buff.erase(std::remove_if(buff.begin(), buff.end(), isspace), buff.end());
     std::stringstream  buffer(buff);
-     buffer.erase(0, buffer.find_first_not_of('\t'));
-      getline(buffer, word, ' ');
-      word.erase(std::remove_if(word.begin(), word.end(), isspace), word.end());
-      std::cout << word << "    is word" << std::endl;
-      if(!word.compare("server"))
-        i++;
-      else if(!word.compare("location"))
-        j++;
+
+    if ((!buff.compare(0, 6,"server") && buff.length() > 6) || (!buff.compare(0, 8,"location") && buff.length() > 8))
+      ft_perr("Error, bad syntax!");
+    
+    if(!buff.compare("server"))
+      i++;
+    else if(!buff.compare("location"))
+      j++;
   }
-
-  std::cout << "total servrers: " << i << " and tot locations is : " << j << std::endl;
-
-}
-
-void ft_perr(std::string msg)
-{
-  std::cout << msg << std::endl;
-  exit(1);
 }
 
 int main(int ac, char **av)
