@@ -25,24 +25,23 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
 
     if ((!buff.compare(0, 6,"server") && buff.length() > 6) || (!buff.compare(0, 8,"location") && buff.length() > 8))
       ft_perr("Error: bad syntax!");
-    
+
     if(!buff.compare("server"))
     {
       srvs.push_back(servers());
       getline(file, buff);
-    buff.erase(std::remove_if(buff.begin(), buff.end(), isspace), buff.end());
-    std::stringstream  buffer(buff);
+      buff.erase(std::remove_if(buff.begin(), buff.end(), isspace), buff.end());
+      std::stringstream  buffer(buff);
 
-    if (buff.compare("{")) 
-      ft_perr("Error: Opening bracket is missing !");
-      i++;
+      if (buff.compare("{") != 0) 
+         ft_perr("Error: Opening bracket is missing !");
+      ob++;
+       i++;
     }
     else if(!buff.compare("location"))
     {
       srvs[i-1].loc.push_back(locations());
     }
-    else if (!buff.compare("{"))
-      ob++;
     else if (!buff.compare("}"))
       cb++;
   }
@@ -63,9 +62,9 @@ int main(int ac, char **av)
 
   std::vector<servers> servs;
   contexts_count(servs, path);
-  
+
   std::cout << "The length of serv: " << servs.size() ;
   std::cout << "The length of locs: " << servs[0].loc.size() ;
-  
+
 
 }
