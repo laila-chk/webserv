@@ -29,6 +29,12 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
     if(!buff.compare("server"))
     {
       srvs.push_back(servers());
+      getline(file, buff);
+    buff.erase(std::remove_if(buff.begin(), buff.end(), isspace), buff.end());
+    std::stringstream  buffer(buff);
+
+    if (buff.compare("{")) 
+      ft_perr("Error: Opening bracket is missing !");
       i++;
     }
     else if(!buff.compare("location"))
