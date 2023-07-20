@@ -2,6 +2,7 @@
 #define  PARSING_HPP
 
 #include <string>
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
