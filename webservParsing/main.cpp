@@ -16,6 +16,8 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
   int   cb = 0;
   int   i = 0;
 
+  if (file.fail())
+    ft_perr("Error: Bad file permissions or file doesn't exist!");
   while (getline(file, buff))
   {
     buff.erase(std::remove_if(buff.begin(), buff.end(), isspace), buff.end());
