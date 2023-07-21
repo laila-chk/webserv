@@ -2,7 +2,4 @@ server
 {
   server_name blah;
   listen 911.911.911.0:18;
-  location 
-  {
-  }
 }

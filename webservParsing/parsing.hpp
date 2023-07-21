@@ -16,9 +16,9 @@ class locations
   private:
 
   public:
-  	std::string root;
+    std::string root;
     std::string pattern;
-  	std::string err_page;
+    std::string err_page;
     int client_max_body_size;
     locations();
     ~locations();
@@ -29,14 +29,14 @@ class servers
   private:
 
   public:
-//	locations *location;
+    //	locations *location;
     std::vector <locations> loc;
-  std::string  port;
-  std::string   host;
-  std::string   server_name;
-  int client_max_body_size;
-  servers();
-  ~servers();
+    std::string  port;
+    std::string   host;
+    std::string   server_name;
+    int client_max_body_size;
+    servers();
+    ~servers();
 };
 
 #endif
