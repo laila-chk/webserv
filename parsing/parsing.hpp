@@ -16,10 +16,13 @@ class locations
   private:
 
   public:
-    std::string root;
     std::string pattern;
+    std::string methods;
+    std::string redir_path;
+    std::string root;
+    bool        autoindex;
+    //pair string string cgi extension + path
     std::string err_page;
-    int client_max_body_size;
     locations();
     ~locations();
 };
