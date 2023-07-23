@@ -1,0 +1,8 @@
+server
+{
+#comments are only allowed in individual lines
+  listen      192.168.1.1:80;
+  location
+  {
+  }
+}

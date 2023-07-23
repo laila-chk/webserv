@@ -16,16 +16,15 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs, servers &sr
 	std::vector<std::string> words;
 	for(size_t i = 0; i < buff.length(); i++)
 	{
-		if (buff[i] == ' ' || buff[i] == '\t' || buff[i] == ';')
+		if (buff[i] == ' ' || buff[i] == '\t' || buff[i] == ';' || buff[i] == ':')
 		{
 			words.push_back(buff.substr(j, i - j));
-			while (buff[i] == ' ' || buff[i] == '\t' || buff[i] == ';')
+			while (buff[i] == ' ' || buff[i] == '\t')
 				i++;
 			j = i;
 		}
 	}
 
-	std::cout << buff << std::endl;
 	for (int i = 0; i < 4; i++)
 	{
 		//std::cout << words[0]<< std::endl;
@@ -40,6 +39,7 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs, servers &sr
 			return true;
 		}
 	}
+  std::cout << buff << std::endl;
 	return false;
 	//compare words[0] to all directives to check wether it is falid or nah
 	//return (serv_dirs.size());
@@ -75,6 +75,8 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
 		if (buff.length())
 		{
 			buff.erase(0, buff.find_first_not_of(" \t"));
+      if (buff[0] == '#')
+        continue ;
 			j = buff.length() - 1;
 			while (j > 0 && (buff[j] == ' ' || buff[j] == '\t'))
 				j--;
@@ -117,6 +119,7 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
 			else if (!directive(buff, serv_dirs, srvs[i-1]))
 				ft_perr("Error: Uknown directive!");
 		}
+    std::cout << buff << std::endl;
 	}
 	if (inSer || inLoc)
 		ft_perr("Error: missing Bracket!");
@@ -136,10 +139,10 @@ int main(int ac, char **av)
 	std::vector<servers> servs;
 	contexts_count(servs, path);
 
-	std::cout << "The length of serv: " << servs.size() << std::endl;
-	std::cout << "The length of locs: " << servs[0].loc.size() << std::endl;
-	std::cout << "we have stored in serv " << servs[0].port << "." << std::endl;
-	std::cout << "we have stored in serv " << servs[0].server_name <<"." << std::endl;
+	// std::cout << "The length of serv: " << servs.size() << std::endl;
+	// std::cout << "The length of locs: " << servs[0].loc.size() << std::endl;
+	// std::cout << "we have stored in serv " << servs[0].port << "." << std::endl;
+	// std::cout << "we have stored in serv " << servs[0].server_name <<"." << std::endl;
 
 
 }
