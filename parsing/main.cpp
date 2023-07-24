@@ -7,7 +7,7 @@ void ft_perr(std::string msg)
 	exit(1);
 }
 
-bool directive(std::string buff, std::vector<std::string> serv_dirs, servers &srv)
+bool directive(std::string buff, std::vector<std::string> serv_dirs, servers &srv, bool inLoc, int ii)
 {
 	if (!buff.compare("{"))
 		return true;
@@ -25,24 +25,36 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs, servers &sr
 		}
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		//std::cout << words[0]<< std::endl;
-		if (!words[0].compare(serv_dirs[i]))
+		if (!inLoc && !words[0].compare(serv_dirs[i]))
 		{
-			//get what class var to store in:
-
 			if (!words[0].compare("server_name"))
 				srv.server_name = words[1];
 			else if (!words[0].compare("listen"))
 				srv.port = words[1];
+			else if (!words[0].compare("client_max_body_size"))
+				srv.client_max_body_size = words[1];
 			return true;
 		}
+    else if(inLoc && !words[0].compare(serv_dirs[i]))
+    {
+			if (!words[0].compare("pattern"))
+				srv.loc[ii].pattern = words[1];
+			else if (!words[0].compare("methods"))
+				srv.loc[ii].methods = words[1];
+			else if (!words[0].compare("redir_path"))
+				srv.loc[ii].redir_path = words[1];
+			else if (!words[0].compare("root"))
+				srv.loc[ii].root = words[1];
+			else if (!words[0].compare("autoindex"))
+				srv.loc[ii].autoindex = true ;
+      return true;
+    }
 	}
   std::cout << buff << std::endl;
 	return false;
-	//compare words[0] to all directives to check wether it is falid or nah
-	//return (serv_dirs.size());
 }
 
 void  dirs(std::vector<std::string> &serv_dirs)
@@ -50,10 +62,16 @@ void  dirs(std::vector<std::string> &serv_dirs)
 	// we cann later add location directives too, since they will be know by their indexs.
 	serv_dirs.push_back("server_name");
 	serv_dirs.push_back("listen");
-	serv_dirs.push_back("error_page");
 	serv_dirs.push_back("client_max_body_size");
-	//  serv_dirs.push_back("root");
-	//  ma3raftchi wach ghadrcha9li ndir chi root f serv wla la :3
+
+  //location directives:
+  serv_dirs.push_back("pattern");
+  serv_dirs.push_back("methods");
+  serv_dirs.push_back("redir_path");
+  serv_dirs.push_back("root");
+  serv_dirs.push_back("autoindex");
+	serv_dirs.push_back("error_page");
+  serv_dirs.push_back("cgi");
 }
 
 void contexts_count(std::vector<servers> &srvs, std::string path)
@@ -63,6 +81,7 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
 	std::string word;
 	std::vector<std::string> serv_dirs;
 	int   i = 0;
+	int   ii = 0;
 	bool inSer = false;
 	bool inLoc = false;
 	int j = 0;
@@ -101,6 +120,7 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
 			if(inSer && (buff.compare(0, 8,"location") == 0 && buff.length() == 8))
 			{
 				srvs[i-1].loc.push_back(locations());
+        ii++;
 
 				getline(file, buff);
 				buff.erase(std::remove_if(buff.begin(), buff.end(), isspace), buff.end());
@@ -116,10 +136,9 @@ void contexts_count(std::vector<servers> &srvs, std::string path)
 			else if (inSer && !buff.compare("}"))
 				inSer = false;
 
-			else if (!directive(buff, serv_dirs, srvs[i-1]))
+			else if (!directive(buff, serv_dirs, srvs[i-1], inLoc, ii))
 				ft_perr("Error: Uknown directive!");
 		}
-    std::cout << buff << std::endl;
 	}
 	if (inSer || inLoc)
 		ft_perr("Error: missing Bracket!");
