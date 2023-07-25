@@ -53,10 +53,7 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs,
         if (words.size() != 3)
           ft_perr("Error: cgi bad format!");
         srv.loc[ii].cgi.push_back(make_pair(words[1], words[2]));
-      } // needs protection and like
-        // many other attrs, we need to check wether
-        // we have the right amount of words aka
-        // words.length() is right for each directive.
+      }
 
       return true;
     }
@@ -162,8 +159,11 @@ int main(int ac, char **av) {
   std::vector<servers> servs;
   contexts_count(servs, path);
 
-  std::cout << "The length of serv: " << servs.size() << std::endl;
-  std::cout << "The length of locs: " << servs[0].loc.size() << std::endl;
+  std::cout << "Hello from the past, please check up on error pages, they "
+               "appear to not being added! Thank u"
+            << std::endl;
+  // std::cout << "The length of serv: " << servs.size() << std::endl;
+  // std::cout << "The length of locs: " << servs[0].loc.size() << std::endl;
   // std::cout << "we have stored in serv " << servs[0].port << "." <<
   // std::endl; std::cout << "we have stored in serv " << servs[0].server_name
   // <<"." << std::endl;
