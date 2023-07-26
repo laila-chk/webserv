@@ -8,24 +8,24 @@ void ft_perr(std::string msg) {
 
 bool is_num(std::string str)
 {
-	for (int i = 0; str[i]; i++)
-	{
-		if (!isdigit(str[i]))
-			return false;
-	}
-	return true;
+  for (int i = 0; str[i]; i++)
+  {
+    if (!isdigit(str[i]))
+      return false;
+  }
+  return true;
 }
 
 
 bool directive(std::string buff, std::vector<std::string> serv_dirs,
-               servers &srv, bool inLoc, int ii) {
+    servers &srv, bool inLoc, int ii) {
   if (!buff.compare("{"))
     return true;
   int j = 0;
 
   std::vector<std::string> words;
   for (size_t i = 0; i < buff.length(); i++) {
-    if (buff[i] == ' ' || buff[i] == '\t' || buff[i] == ';' || buff[i] == ':') {
+    if (buff[i] == ' ' || buff[i] == '\t' || buff[i] == ';') {
       words.push_back(buff.substr(j, i - j));
       while (buff[i] == ' ' || buff[i] == '\t')
         i++;
@@ -46,11 +46,10 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs,
       {
         for (size_t x  = 1; x < words.size(); x++)
         {
-          //condition needs fixing, gotta go now
-          if (!is_num(words[x]) && x != words.size() - 1 && words[x].compare(words[x].length() - 5, 5, ".html"))
-            perror("Error: error_page bad format!");
-          std::cout << words[x][words[x].length() - 5] << std::endl;
-          std::cout << words[x] << "   " << std::endl;
+            if (x != words.size() - 1 && !is_num(words[x]))
+              ft_perr("Error: error code should be a number!");
+          if (x == words.size() - 1 && (is_num(words[x]) || words[x].compare(words[x].length() - 5, 5, ".html")))
+             ft_perr("Error: error_page file is invalid!");
         }
       }
       return true;
@@ -62,10 +61,18 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs,
         srv.loc[ii].methods = words[1];
 
       else if (!words[0].compare("return"))
-        srv.loc[ii].redir_path = words[1];
+      {
+        if (words.size() != 3 || !is_num(words[1]))
+          ft_perr("Error: bad redirection!");
+        srv.loc[ii].redir_path = words[2];
+      }
 
       else if (!words[0].compare("root"))
+      {
+        if (words.size() != 2)
+          ft_perr("Error! root bad format!");
         srv.loc[ii].root = words[1];
+      }
       else if (!words[0].compare("autoindex"))
         srv.loc[ii].autoindex = true;
       else if (!words[0].compare("index"))
@@ -133,7 +140,7 @@ void contexts_count(std::vector<servers> &srvs, std::string path) {
         srvs.push_back(servers());
         getline(file, buff);
         buff.erase(std::remove_if(buff.begin(), buff.end(), isspace),
-                   buff.end());
+            buff.end());
         if (buff.compare("{") != 0)
           ft_perr("Error: Opening bracket is missing !");
         inSer = true;
@@ -148,12 +155,12 @@ void contexts_count(std::vector<servers> &srvs, std::string path) {
 
         getline(file, buff);
         buff.erase(std::remove_if(buff.begin(), buff.end(), isspace),
-                   buff.end());
+            buff.end());
         if (buff.compare("{") != 0)
           ft_perr("Error: Opening bracket is missing for location!");
         inLoc = true;
       } else if (inSer &&
-                 (!buff.compare(0, 8, "location") && buff.length() != 8))
+          (!buff.compare(0, 8, "location") && buff.length() != 8))
         ft_perr("Error: bad syntax!");
       if (inLoc && !buff.compare("}"))
         inLoc = false;
@@ -182,9 +189,6 @@ int main(int ac, char **av) {
   std::vector<servers> servs;
   contexts_count(servs, path);
 
-  std::cout << "Hello from the past, please check up on error pages, they "
-               "appear to not being added! Thank u"
-            << std::endl;
   // std::cout << "The length of serv: " << servs.size() << std::endl;
   // std::cout << "The length of locs: " << servs[0].loc.size() << std::endl;
   // std::cout << "we have stored in serv " << servs[0].address << "." <<

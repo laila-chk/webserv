@@ -3,7 +3,7 @@ server
 #comments are only allowed in individual lines
   listen      192.168.1.1:80;
   error_page	  404 /not_found.html;
-  error_page 500 502 503 504 /50x.htm;
+  error_page 500 502 503 504 /50x.html;
   server_name      name1.com;
   client_max_body_size 10;
   location
@@ -11,7 +11,7 @@ server
     pattern   /path/to/files;
     limit_except  GET POST;
     return 301 https://hello.com/redirect;
-    root    /root/redirectory;
+    root    /root/redirectory ;
     autoindex on;
     index   index.html index.php;
     cgi .php /aa/ee/php-fpm.sock ;
