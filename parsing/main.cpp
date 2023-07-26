@@ -6,6 +6,17 @@ void ft_perr(std::string msg) {
   exit(1);
 }
 
+bool is_num(std::string str)
+{
+	for (int i = 0; str[i]; i++)
+	{
+		if (!isdigit(str[i]))
+			return false;
+	}
+	return true;
+}
+
+
 bool directive(std::string buff, std::vector<std::string> serv_dirs,
                servers &srv, bool inLoc, int ii) {
   if (!buff.compare("{"))
@@ -22,15 +33,26 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs,
     }
   }
 
-  for (int i = 0; i < 10; i++) {
+  for (size_t i = 0; i < serv_dirs.size(); i++) {
     // std::cout << words[0]<< std::endl;
     if (!inLoc && !words[0].compare(serv_dirs[i])) {
       if (!words[0].compare("server_name"))
         srv.server_name = words[1];
       else if (!words[0].compare("listen"))
-        srv.port = words[1];
+        srv.address = words[1];
       else if (!words[0].compare("client_max_body_size"))
         srv.client_max_body_size = words[1];
+      else if (!words[0].compare("error_page"))
+      {
+        for (size_t x  = 1; x < words.size(); x++)
+        {
+          //condition needs fixing, gotta go now
+          if (!is_num(words[x]) && x != words.size() - 1 && words[x].compare(words[x].length() - 5, 5, ".html"))
+            perror("Error: error_page bad format!");
+          std::cout << words[x][words[x].length() - 5] << std::endl;
+          std::cout << words[x] << "   " << std::endl;
+        }
+      }
       return true;
     } else if (inLoc && !words[0].compare(serv_dirs[i])) {
       if (!words[0].compare("pattern"))
@@ -68,6 +90,7 @@ void dirs(std::vector<std::string> &serv_dirs) {
   serv_dirs.push_back("server_name");
   serv_dirs.push_back("listen");
   serv_dirs.push_back("client_max_body_size");
+  serv_dirs.push_back("error_page");
 
   // location directives:
   serv_dirs.push_back("pattern");
@@ -164,7 +187,7 @@ int main(int ac, char **av) {
             << std::endl;
   // std::cout << "The length of serv: " << servs.size() << std::endl;
   // std::cout << "The length of locs: " << servs[0].loc.size() << std::endl;
-  // std::cout << "we have stored in serv " << servs[0].port << "." <<
+  // std::cout << "we have stored in serv " << servs[0].address << "." <<
   // std::endl; std::cout << "we have stored in serv " << servs[0].server_name
   // <<"." << std::endl;
 }
