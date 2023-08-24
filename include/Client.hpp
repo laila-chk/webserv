@@ -6,7 +6,7 @@
 /*   By: mtellami <mtellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 08:22:44 by mtellami          #+#    #+#             */
-/*   Updated: 2023/08/20 11:43:05 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/08/12 20:05:16 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ class Client {
 
         Request     *_req;
         Response    *_res;
+};
         void    get_matched_location(void);
         Request *get_req(void);
-        locations *get_location();
-};
+        locations *get_location(); };
 
 #endif

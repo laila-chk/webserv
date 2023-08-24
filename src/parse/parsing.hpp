@@ -21,7 +21,13 @@ class locations {
     std::string redir_path;
     std::string root;
     bool autoindex;
+<<<<<<< HEAD
     std::vector<std::string> def_files;
+=======
+    std::string def_files;
+    //Change from vec of pairs into map for easier handling + bonus
+//    std::vector<std::pair<std::string, std::string> > cgi;
+>>>>>>> origin/multiplex
     std::map<std::string, std::string> cgi;
     locations();
     locations(const locations & obj);

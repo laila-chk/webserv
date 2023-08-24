@@ -176,8 +176,9 @@ bool directive(std::string buff, std::vector<std::string> serv_dirs,
         srv.loc[ii].autoindex = false;
         if (!words[1].compare("on"))
           srv.loc[ii].autoindex = true;
-      } else if (!words[0].compare("index"))
-        srv.loc[ii].def_files.push_back(words[1]);
+      }
+      else if (!words[0].compare("index")) //structure changed, more checking is required!
+        srv.loc[ii].def_files = words[1];
 
       else if (!words[0].compare("cgi")) {
         if (words.size() != 3 || words[1][0] != '.')

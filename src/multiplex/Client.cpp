@@ -6,7 +6,7 @@
 /*   By: mtellami <mtellami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 08:42:38 by mtellami          #+#    #+#             */
-/*   Updated: 2023/08/20 11:44:09 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:08:39 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,10 @@ void    Client::sending(void) {
     _done_send = true;
     return ;
   }
+
   // response
   if (_req->get_method() == "GET") {
-    _res->GET(this);
+    _res->GET(this, _matched);
   } else if (_req->get_method() == "POST") {
     _res->POST(this);
   } else if (_req->get_method() == "DELETE") {

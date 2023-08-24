@@ -144,7 +144,6 @@ void cgi_exec(std::string path, Client *client, int loc) {
   std::cout << "==++--=-  " << env[1] << std::endl;
   // else   -->  that means no bin is available to run the script;
   */
-  std::remove(filename.c_str());
 }
 
 // NEED TO ADD:
